@@ -3,8 +3,8 @@ package com.algaworks.algashop.ordering.domain.entity;
 //import org.apache.commons.validator.routines.EmailValidator;
 
 import com.algaworks.algashop.ordering.domain.exceptions.CustomerArchivedException;
-import com.algaworks.algashop.ordering.domain.validator.FieldValidations;
 import com.algaworks.algashop.ordering.domain.valueobject.*;
+import com.algaworks.algashop.ordering.domain.valueobject.id.CustomerId;
 import lombok.Builder;
 
 import java.time.OffsetDateTime;

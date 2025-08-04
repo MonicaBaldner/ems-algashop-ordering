@@ -1,4 +1,4 @@
-package com.algaworks.algashop.ordering.domain.valueobject;
+package com.algaworks.algashop.ordering.domain.valueobject.id;
 
 import com.algaworks.algashop.ordering.domain.utility.IdGenerator;
 
