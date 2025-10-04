@@ -189,4 +189,32 @@ class OrderTest {
         Assertions.assertThatExceptionOfType(ProductOutOfStockException.class).isThrownBy(addItemTask);
     }
 
+    @Test
+    void givenPlacedOrder_whenMarkAsPaid_shouldGenerateOrderPaidEvent() {
+        Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.PLACED).build();
+        order.markAsPaid();
+        OrderPaidEvent event = new OrderPaidEvent(
+                order.id(), order.customerId(), order.paidAt());
+        Assertions.assertThat(order.domainEvents()).contains(event);
+    }
+
+    @Test
+    void givenPaidOrder_whenMarkAsReadyshouldGenerateOrderReadyEvent() {
+        Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.PAID).build();
+        order.markAsReady();
+        OrderReadyEvent event = new OrderReadyEvent(
+                order.id(), order.customerId(), order.readyAt());
+        Assertions.assertThat(order.domainEvents()).contains(event);
+    }
+
+    @Test
+    void givenDraftOrder_whenCancel_shouldGenerateOrderCanceledEvent() {
+        Order order = OrderTestDataBuilder.anOrder().build();
+        order.cancel();
+        OrderCanceledEvent event = new OrderCanceledEvent(
+                order.id(), order.customerId(), order.canceledAt());
+        Assertions.assertThat(order.domainEvents()).contains(event);
+    }
+
+
 }

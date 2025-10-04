@@ -162,4 +162,21 @@ class ShoppingCartTest {
 
         Assertions.assertThat(shoppingCart1).isNotEqualTo(shoppingCart2);
     }
+
+    @Test
+    void whenStartShopping_shouldGenerateShoppingCartCreatedEvent() {
+        var customerId = new CustomerId();
+
+        ShoppingCart cart = ShoppingCart.startShopping(customerId);
+
+        ShoppingCartCreatedEvent event = new ShoppingCartCreatedEvent(
+                cart.id(),
+                cart.customerId(),
+                cart.createdAt()
+        );
+        Assertions.assertThat(cart.domainEvents()).contains(event);
+
+    }
+
+
 }

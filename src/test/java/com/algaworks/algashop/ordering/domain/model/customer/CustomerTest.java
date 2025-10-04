@@ -93,4 +93,23 @@ class CustomerTest {
                 .isThrownBy(()-> new LoyaltyPoints(-10)); //simplificar
 
     }
+
+    @Test
+    void givenValidData_whenCreateBrandNewCustomer_shouldGenerateCustomerRegisteredEvent() {
+        Customer customer = CustomerTestDataBuilder.brandNewCustomer().build();
+        CustomerRegisteredEvent event = new CustomerRegisteredEvent(customer.id(),
+                                                     customer.registeredAt(),
+                                                     customer.fullName(),
+                                                     customer.email());
+        Assertions.assertThat(customer.domainEvents()).contains(event);
+    }
+
+    @Test
+    void givenUnarchivedCustomer_whenArchive_shouldGenerateCustomerArchivedEvent() {
+        Customer customer = CustomerTestDataBuilder.existingCustomer().archived(false).archivedAt(null).build();
+        customer.archive();
+        CustomerArchivedEvent event = new CustomerArchivedEvent(customer.id(), customer.archivedAt());
+        Assertions.assertThat(customer.domainEvents()).contains(event);
+    }
+
 }

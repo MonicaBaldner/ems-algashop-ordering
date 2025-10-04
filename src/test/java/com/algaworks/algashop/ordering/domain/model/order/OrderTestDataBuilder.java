@@ -1,7 +1,7 @@
 package com.algaworks.algashop.ordering.domain.model.order;
 
-import com.algaworks.algashop.ordering.domain.model.product.ProductTestDataBuilder;
 import com.algaworks.algashop.ordering.domain.model.commons.*;
+import com.algaworks.algashop.ordering.domain.model.product.ProductTestDataBuilder;
 import com.algaworks.algashop.ordering.domain.model.customer.CustomerId;
 
 import java.time.LocalDate;
@@ -111,6 +111,19 @@ public class OrderTestDataBuilder {
                         .fullName(new FullName("Mary", "Jones"))
                         .document(new Document("552-11-4333"))
                         .phone(new Phone("54-454-1144"))
+                        .build())
+                .build();
+    }
+
+    public static Shipping aShippingWithCost(Money cost) {
+        return Shipping.builder()
+                .cost(cost)
+                .expectedDate(LocalDate.now().plusWeeks(1))
+                .address(anAddress())
+                .recipient(Recipient.builder()
+                        .fullName(new FullName("John", "Doe"))
+                        .document(new Document("112-33-2321"))
+                        .phone(new Phone("111-441-1244"))
                         .build())
                 .build();
     }

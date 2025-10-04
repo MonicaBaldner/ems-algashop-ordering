@@ -44,7 +44,10 @@ public class ShoppingCartsPersistenceProvider implements ShoppingCarts {
 
         persistenceRepository.findById(ShoppingCartId)
                 .ifPresentOrElse(
-                        (persistenceEntity) -> update(aggregateRoot, persistenceEntity),
+                        (persistenceEntity) -> {
+                            System.out.println("Carrinho encontrado, atualizando: " + persistenceEntity.getId());
+                            update(aggregateRoot, persistenceEntity);
+                        },
                         ()-> insert(aggregateRoot)
                 );
     }
@@ -56,7 +59,7 @@ public class ShoppingCartsPersistenceProvider implements ShoppingCarts {
 
     private void update(ShoppingCart aggregateRoot, ShoppingCartPersistenceEntity persistenceEntity) {
         persistenceEntity = assembler.merge(persistenceEntity, aggregateRoot);
-        entityManager.detach(persistenceEntity);
+      //  entityManager.detach(persistenceEntity);
         persistenceEntity = persistenceRepository.saveAndFlush(persistenceEntity);
         updateVersion(aggregateRoot, persistenceEntity);
     }
