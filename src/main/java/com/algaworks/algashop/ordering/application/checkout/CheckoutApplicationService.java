@@ -48,7 +48,7 @@ public class CheckoutApplicationService {
 
         ShoppingCartId shoppingCartId = new ShoppingCartId(input.getShoppingCartId());
         ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
-                .orElseThrow(() -> new ShoppingCartNotFoundException(shoppingCartId));
+                .orElseThrow(ShoppingCartNotFoundException::new);
 
         Customer customer = customers.ofId(shoppingCart.customerId()).orElseThrow(() -> new CustomerNotFoundException());
 

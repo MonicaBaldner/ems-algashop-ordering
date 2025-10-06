@@ -29,7 +29,7 @@ public class ShoppingCartManagementApplicationService {
         ProductId productId = new ProductId(input.getProductId());
 
         ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
-                .orElseThrow(()-> new ShoppingCartNotFoundException(shoppingCartId));
+                .orElseThrow(ShoppingCartNotFoundException::new);
 
         Product product = productCatalogService.ofId(productId)
                 .orElseThrow(()-> new ProductNotFoundException());
@@ -53,7 +53,7 @@ public class ShoppingCartManagementApplicationService {
         Objects.requireNonNull(rawShoppingCartItemId);
         ShoppingCartId shoppingCartId = new ShoppingCartId(rawShoppingCartId);
         ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
-                .orElseThrow(()-> new ShoppingCartNotFoundException(shoppingCartId));
+                .orElseThrow(ShoppingCartNotFoundException::new);
         shoppingCart.removeItem(new ShoppingCartItemId(rawShoppingCartItemId));
         shoppingCarts.add(shoppingCart);
     }
@@ -63,7 +63,7 @@ public class ShoppingCartManagementApplicationService {
         Objects.requireNonNull(rawShoppingCartId);
         ShoppingCartId shoppingCartId = new ShoppingCartId(rawShoppingCartId);
         ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
-                .orElseThrow(()-> new ShoppingCartNotFoundException(shoppingCartId));
+                .orElseThrow(ShoppingCartNotFoundException::new);
         shoppingCart.empty();
         shoppingCarts.add(shoppingCart);
     }
@@ -73,7 +73,7 @@ public class ShoppingCartManagementApplicationService {
         Objects.requireNonNull(rawShoppingCartId);
         ShoppingCartId shoppingCartId = new ShoppingCartId(rawShoppingCartId);
         ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
-                .orElseThrow(()-> new ShoppingCartNotFoundException(shoppingCartId));
+                .orElseThrow(ShoppingCartNotFoundException::new);
         shoppingCarts.remove(shoppingCart);
     }
 
