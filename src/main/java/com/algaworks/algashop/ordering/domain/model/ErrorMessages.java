@@ -41,5 +41,6 @@ public class ErrorMessages {
     public static final String ERROR_SHOPPING_CART_NOT_FOUND = "Shopping cart %s not found";
     public static final String ERROR_PRODUCT_NOT_FOUND = "Product %s not found";
     public static final String ERROR_CUSTOMER_NOT_FOUND = "Customer %s not found";
-    public static final String ERROR_CUSTOMER_ALREADY_HAVE_SHOPPING_CART ="Customer %s already have shopping car %s";
+    public static final String ERROR_CUSTOMER_ALREADY_HAVE_SHOPPING_CART ="Customer %s already have shopping cart";
+    public static final String ERROR_CUSTOMER_EMAIL_IS_IN_USE = "Customer email is in use";
 }

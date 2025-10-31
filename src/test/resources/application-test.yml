@@ -25,4 +25,6 @@ algashop:
       # provider: "RAPIDEX"  substituido por "FAKE" na 11.02
       provider: "FAKE"
     rapidex:
-      url: "http://localhost:8780/"
+      url: "http://localhost:8780"
+    product-catalog:
+      url: "http://localhost:8781"

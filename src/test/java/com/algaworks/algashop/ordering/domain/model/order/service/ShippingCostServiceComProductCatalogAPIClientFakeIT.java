@@ -1,4 +1,4 @@
-package com.algaworks.algashop.ordering.domain.model.service;
+package com.algaworks.algashop.ordering.domain.model.order.service;
 
 import com.algaworks.algashop.ordering.domain.model.commons.ZipCode;
 import com.algaworks.algashop.ordering.domain.model.order.shipping.OriginAddressService;
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class ShippingCostServiceIT {
+public class ShippingCostServiceComProductCatalogAPIClientFakeIT {
 
     @Autowired
     private ShippingCostService shippingCostService;

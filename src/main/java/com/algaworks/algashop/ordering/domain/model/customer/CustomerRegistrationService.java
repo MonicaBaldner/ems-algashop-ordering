@@ -40,7 +40,7 @@ public class CustomerRegistrationService {
 
         System.out.println("Customers: " + customers);
         if (!customers.isEmailUnique(email, customerId)) {
-            throw new CustomerEmailIsInUseException();
+            throw new CustomerEmailIsInUseException(customerId);
         }
     }
 
