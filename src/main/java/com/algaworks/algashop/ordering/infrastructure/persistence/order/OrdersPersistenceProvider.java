@@ -59,13 +59,6 @@ public class OrdersPersistenceProvider implements Orders {
                 );
     }
 
-    @Override
-    @Transactional
-    public void remove(Order order) {
-
-            persistenceRepository.deleteById(order.id().value().toLong());
-    }
-
     private void update(Order aggregateRoot, OrderPersistenceEntity persistenceEntity) {
         persistenceEntity = assembler.merge(persistenceEntity, aggregateRoot);
         entityManager.detach(persistenceEntity);

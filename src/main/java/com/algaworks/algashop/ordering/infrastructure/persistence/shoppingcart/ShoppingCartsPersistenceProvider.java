@@ -84,6 +84,11 @@ public class ShoppingCartsPersistenceProvider implements ShoppingCarts {
         this.persistenceRepository.deleteById(shoppingCart.id().value());
     }
 
+    @Override
+    @Transactional(readOnly = false)
+    public void remove(ShoppingCartId shoppingCartId) {
+        this.persistenceRepository.deleteById(shoppingCartId.value());
+    }
 
 
     @Override

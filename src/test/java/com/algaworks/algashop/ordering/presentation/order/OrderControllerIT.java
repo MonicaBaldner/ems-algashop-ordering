@@ -26,6 +26,7 @@ import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.UUID;
 
@@ -36,7 +37,9 @@ import static io.restassured.config.JsonConfig.jsonConfig;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //@AutoConfigureStubRunner(stubsMode = StubRunnerProperties.StubsMode.LOCAL,
 //        ids = "com.algaworks.algashop:product-catalog:0.0.1-SNAPSHOT:8781")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@Sql(scripts = "classpath:db/testdata/afterMigrate.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(scripts = "classpath:db/clean/afterMigrate.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
 public class OrderControllerIT {
 
     @LocalServerPort
@@ -55,7 +58,7 @@ public class OrderControllerIT {
 
     private static final UUID validCustomerId = UUID.fromString("6e148bd5-47f6-4022-b9da-07cfaa294f7a");
     private static final UUID validProductId = UUID.fromString("fffe6ec2-7103-48b3-8e4f-3b58e43fb75a");
-    private static final UUID validShoppingCartId = UUID.fromString("28fcd9fb-4ce7-44d6-9583-14d8b3dc5aff");
+    private static final UUID validShoppingCartId = UUID.fromString("38fcd9fb-4ce7-44d6-9583-14d8b5dc8aff");
 
     private WireMockServer wireMockProductCatalog;
     private WireMockServer wireMockRapidex;
@@ -67,10 +70,11 @@ public class OrderControllerIT {
 
         RestAssured.config().jsonConfig(jsonConfig().numberReturnType(JsonPathConfig.NumberReturnType.BIG_DECIMAL));
 
-        initDatabase();
+       // initDatabase();
 
         wireMockRapidex = new WireMockServer(options()
-                .port(8780)
+                //.port(8780)
+                .dynamicPort()
                 .usingFilesUnderDirectory("src/test/resources/wiremock/rapidex")
                 .extensions(new ResponseTemplateTransformer(true)));
 
@@ -89,7 +93,7 @@ public class OrderControllerIT {
         wireMockProductCatalog.stop();
     }
 
-    private void initDatabase() {
+    /*private void initDatabase() {
 //        if (databaseInitialized) {
 //            return;
 //        }
@@ -99,7 +103,7 @@ public class OrderControllerIT {
         );
 
       //  databaseInitialized = true;
-    }
+    }*/
 
     @Test
     public void shouldCreateOrderUsingProduct() {
@@ -209,11 +213,11 @@ public class OrderControllerIT {
 
     @Test
     public void shouldCreateOrderUsingShoppingCart() {
-        var shoppingCartPersistence = cartWithItems()
+        /*var shoppingCartPersistence = cartWithItems()
                 .id(validShoppingCartId)
                 .customer(customerRepository.getReferenceById(validCustomerId))
                 .build();
-        shoppingCartRepository.save(shoppingCartPersistence);
+        shoppingCartRepository.save(shoppingCartPersistence);*/
 
         String json = AlgaShopResourceUtils.readContent("json/create-order-with-shopping-cart.json");
 
@@ -242,11 +246,11 @@ public class OrderControllerIT {
     @Test
     public void shouldReturnErrorWhenCreatingOrderWithNonexistentCart() {
 
-        var shoppingCartPersistence = cartWithItems()
+       /* var shoppingCartPersistence = cartWithItems()
                 .id(validShoppingCartId)
                 .customer(customerRepository.getReferenceById(validCustomerId))
                 .build();
-        shoppingCartRepository.save(shoppingCartPersistence);
+        shoppingCartRepository.save(shoppingCartPersistence);*/
 
         String json = AlgaShopResourceUtils.readContent("json/create-order-with-non-existent-shopping-cart.json");
 

@@ -20,7 +20,8 @@ import java.util.UUID;
 @ToString(of = "id")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @NoArgsConstructor
-@Table(name = "\"customer\"")
+//@Table(name = "\"customer\"")
+@Table(name = "customer")
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)

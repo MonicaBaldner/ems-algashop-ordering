@@ -75,17 +75,21 @@ public class ShoppingCart extends AbstractEventSourceEntity implements Aggregate
 
         product.checkOutOfStock();
 
-        ShoppingCartItem shoppingCartItem = ShoppingCartItem.brandNew()
-                .shoppingCartId(this.id())
-                .productId(product.id())
-                .productName(product.name())
-                .price(product.price())
-                .available(product.inStock())
-                .quantity(quantity)
-                .build();
-
         searchItemByProduct(product.id())
-                .ifPresentOrElse(i -> updateItem(i, product, quantity), () -> insertItem(shoppingCartItem));
+                .ifPresentOrElse(
+                        existingItem -> updateItem(existingItem, product, quantity),
+                        () -> {
+                            ShoppingCartItem newItem = ShoppingCartItem.brandNew()
+                                    .shoppingCartId(this.id())
+                                    .productId(product.id())
+                                    .productName(product.name())
+                                    .price(product.price())
+                                    .available(product.inStock())
+                                    .quantity(quantity)
+                                    .build();
+                            insertItem(newItem);
+                        }
+                );
 
         this.recalculateTotals();
 

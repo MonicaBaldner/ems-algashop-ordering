@@ -5,6 +5,7 @@ import com.algaworks.algashop.ordering.infrastructure.persistence.customer.Custo
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 public class ShoppingCartPersistenceEntityTestDataBuilder {
@@ -26,7 +27,8 @@ public class ShoppingCartPersistenceEntityTestDataBuilder {
         ShoppingCartItemPersistenceEntity item1 = existingItem().shoppingCart(cart).build();
         ShoppingCartItemPersistenceEntity item2 = existingItemAlt().shoppingCart(cart).build();
 
-        cart.setItems(Set.of(item1, item2));
+        //cart.setItems(Set.of(item1, item2));
+        cart.setItems(new HashSet<>(Set.of(item1, item2)));
 
         return cart.toBuilder();
     }

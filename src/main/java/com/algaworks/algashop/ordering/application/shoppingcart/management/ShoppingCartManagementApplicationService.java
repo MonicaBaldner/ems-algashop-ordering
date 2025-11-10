@@ -73,8 +73,9 @@ public class ShoppingCartManagementApplicationService {
         Objects.requireNonNull(rawShoppingCartId);
         ShoppingCartId shoppingCartId = new ShoppingCartId(rawShoppingCartId);
         ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
-                .orElseThrow(ShoppingCartNotFoundException::new);
+                .orElseThrow(()-> new ShoppingCartNotFoundException());
         shoppingCarts.remove(shoppingCart);
     }
+
 
 }

@@ -7,5 +7,4 @@ public interface Repository<T extends AggregateRoot<ID>, ID> {
     boolean exists(ID id);
     void add(T aggregateRoot);
     long count();
-    void remove(T aggregateRoot);
 }

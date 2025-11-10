@@ -68,12 +68,6 @@ public class CustomersPersistenceProvider implements Customers {
         return !persistenceRepository.existsByEmailAndIdNot(email.value(), exceptCustomerId.value());
     }
 
-    @Override
-    @Transactional
-    public void remove(Customer customer) {
-        persistenceRepository.deleteById(customer.id().value());
-    }
-
     private void update(Customer aggregateRoot, CustomerPersistenceEntity persistenceEntity) {
         persistenceEntity = assembler.merge(persistenceEntity, aggregateRoot);
         entityManager.detach(persistenceEntity);

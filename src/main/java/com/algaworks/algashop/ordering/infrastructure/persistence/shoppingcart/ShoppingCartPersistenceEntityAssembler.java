@@ -6,7 +6,9 @@ import com.algaworks.algashop.ordering.infrastructure.persistence.customer.Custo
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -28,7 +30,30 @@ public class ShoppingCartPersistenceEntityAssembler {
         persistenceEntity.setTotalItems(shoppingCart.totalItems().value());
         persistenceEntity.setCreatedAt(shoppingCart.createdAt());
         persistenceEntity.setVersion((shoppingCart.version()));
-        persistenceEntity.replaceItems(toOrderItemsEntities(shoppingCart.items()));
+      //  persistenceEntity.replaceItems(toOrderItemsEntities(shoppingCart.items()));
+        // Cria um mapa dos itens já existentes por ID
+        Map<UUID, ShoppingCartItemPersistenceEntity> itensExistentesPorId = persistenceEntity.getItems().stream()
+                .collect(Collectors.toMap(ShoppingCartItemPersistenceEntity::getId, i -> i));
+
+        // Atualiza ou cria os itens com base no domínio
+        Set<ShoppingCartItemPersistenceEntity> itensAtualizados = shoppingCart.items().stream()
+                .map(itemDominio -> {
+                    UUID itemId = itemDominio.id().value();
+                    ShoppingCartItemPersistenceEntity existente = itensExistentesPorId.get(itemId);
+                    if (existente != null) {
+                        return mergeItem(existente, itemDominio); // atualiza o existente
+                    } else {
+                        return mergeItem(new ShoppingCartItemPersistenceEntity(), itemDominio); // cria novo
+                    }
+                })
+                .collect(Collectors.toSet());
+
+        persistenceEntity.getItems().clear();
+        persistenceEntity.getItems().addAll(itensAtualizados);
+
+        // Garante que todos os itens saibam a quem pertencem
+        persistenceEntity.getItems().forEach(item -> item.setShoppingCart(persistenceEntity));
+
         persistenceEntity.addEvents(shoppingCart.domainEvents());
 
         return persistenceEntity;
