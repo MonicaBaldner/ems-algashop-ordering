@@ -64,6 +64,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.assertj:assertj-core:3.27.3'
     testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:postgresql'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testRuntimeOnly 'com.h2database:h2'
     mockitoAgent('org.mockito:mockito-core:5.14.2') {transitive = false}
@@ -112,4 +115,17 @@ tasks.register('integrationTest', Test) {
         includeTestsMatching "*IT"
         excludeTestsMatching "*Test"
     }
+}
+
+bootJar {
+    archiveFileName = 'ordering.jar'
+}
+
+tasks.register('dockerBuild', Exec) {
+    description = 'Builds a multi-platform Docker image using Buildx'
+    group = 'build'
+    dependsOn('bootJar')
+    workingDir project.rootDir
+    commandLine 'docker', 'buildx', 'build', '--platform', 'linux/arm64/v8,linux/amd64',
+            '--tag', 'algashop/ordering:dev', '.'
 }
